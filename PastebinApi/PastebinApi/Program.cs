@@ -7,32 +7,43 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("https://pruthvirajpallykonda.github.io")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Add controllers
 builder.Services.AddControllers();
 
-// Optional: Add Swagger (if Swashbuckle installed)
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure pipeline
+// Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Don't use HTTPS redirection on Railway (it handles SSL)
-if (app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
+// ❌ REMOVE HTTPS redirection (Railway already handles SSL)
+// app.UseHttpsRedirection();
+
+// ✅ USE CORS **BEFORE** Authorization (CRITICAL)
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 app.MapControllers();
 
-// 🚨 RAILWAY PORT BINDING (CRITICAL)
+// 🚨 RAILWAY PORT BINDING (KEEP THIS)
 var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrEmpty(port))
 {
