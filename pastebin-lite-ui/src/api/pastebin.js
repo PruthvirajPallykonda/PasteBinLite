@@ -8,9 +8,14 @@ export async function createPaste(data) {
   });
   
   if (!response.ok) {
+  let errorMessage = 'Failed to create paste';
+  try {
     const error = await response.json();
-    throw error;
-  }
+    errorMessage = error.error || errorMessage;
+  } catch {}
+  throw new Error(errorMessage);
+}
+
   
   return response.json();
 }

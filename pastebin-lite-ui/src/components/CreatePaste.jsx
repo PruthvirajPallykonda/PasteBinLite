@@ -23,7 +23,7 @@ export default function CreatePaste() {
       const response = await createPaste(data);
       setResult(response.url);
     } catch (err) {
-      setError(err.error || 'Failed to create paste');
+      setError(err.message || 'Failed to create paste');
     } finally {
       setLoading(false);
     }
