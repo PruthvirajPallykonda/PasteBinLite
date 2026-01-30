@@ -86,7 +86,7 @@ namespace PastebinApi.Controllers
             return Ok(new
             {
                 content = paste.Content,
-                remaining_views = remainingViews, // ✅ correct now
+                remaining_views = remainingViews, 
                 expires_at = paste.ExpiresAt?.UtcDateTime.ToString("o")
             });
         }
