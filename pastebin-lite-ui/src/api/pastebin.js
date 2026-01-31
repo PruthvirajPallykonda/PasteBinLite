@@ -6,16 +6,11 @@ export async function createPaste(data) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
-  
-  if (!response.ok) {
-  let errorMessage = 'Failed to create paste';
-  try {
-    const error = await response.json();
-    errorMessage = error.error || errorMessage;
-  } catch {}
-  throw new Error(errorMessage);
-}
 
-  
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || 'Failed to create paste');
+  }
+
   return response.json();
 }
