@@ -12,8 +12,8 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "https://pruthvirajpallykonda.github.io",           // GitHub Pages
-                "https://pastebin-lite-ui-*.up.railway.app"         // Railway frontend
+                "https://pruthvirajpallykonda.github.io",           
+                "https://pastebin-lite-ui-*.up.railway.app"         
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
